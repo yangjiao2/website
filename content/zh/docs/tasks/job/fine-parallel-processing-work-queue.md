@@ -116,9 +116,6 @@ Waiting for pod default/redis2-c7h78 to be running, status is Pending, pod ready
 Hit enter for command prompt
 ```
 
-现在等待 pod default/redis2-c7h78 运行, 状态为 Pending, pod 启动成功：false
-按回车键进入命令行
-
 <!--
 Now hit enter, start the redis CLI, and create a list with some work items in it.
 -->
