@@ -7,6 +7,7 @@ feature:
     除了服务之外，Kubernetes 还可以管理你的批处理和 CI 工作负载，在期望时替换掉失效的容器。
 weight: 50
 ---
+
 <!--
 reviewers:
 - erictune
@@ -22,7 +23,7 @@ weight: 50
 
 <!-- overview -->
 <!--
-A Job creates one or more Pods and ensures that a specified number of them successfully terminate.
+A Job creates one or more Pods and will continue to retry execution of the Pods until a specified number of them successfully terminate.
 As pods successfully complete, the Job tracks the successful completions.  When a specified number
 of successful completions is reached, the task (ie, Job) is complete.  Deleting a Job will clean up
 the Pods it created.
@@ -33,7 +34,8 @@ due to a node hardware failure or a node reboot).
 
 You can also use a Job to run multiple Pods in parallel.
 -->
-Job 会创建一个或者多个 Pods，并确保指定数量的 Pods 成功终止。
+
+Job 会创建一个或者多个 Pods，并会持续尝试执行重试直到指定数量的 Pods 成功终止。
 随着 Pods 成功结束，Job 跟踪记录成功完成的 Pods 个数。
 当数量达到指定的成功个数阈值时，任务（即 Job）结束。
 删除 Job 的操作会清除所创建的全部 Pods。
@@ -51,7 +53,8 @@ Job 会创建一个或者多个 Pods，并确保指定数量的 Pods 成功终�
 Here is an example Job config.  It computes π to 2000 places and prints it out.
 It takes around 10s to complete.
 -->
-## 运行示例 Job     {#running-an-example-job}
+
+## 运行示例 Job {#running-an-example-job}
 
 下面是一个 Job 配置示例。它负责计算 π 到小数点后 2000 位，并将结果打印出来。
 此计算大约需要 10 秒钟完成。
@@ -59,6 +62,7 @@ It takes around 10s to complete.
 {{< codenew file="controllers/job.yaml" >}}
 
 <!--You can run the example with this command:-->
+
 你可以使用下面的命令来运行此示例：
 
 ```shell
@@ -72,6 +76,7 @@ job.batch/pi created
 ```
 
 <!-- Check on the status of the Job with `kubectl`: -->
+
 使用 `kubectl` 来检查 Job 的状态：
 
 ```shell
@@ -121,6 +126,7 @@ To view completed Pods of a Job, use `kubectl get pods`.
 
 To list all the Pods that belong to a Job in a machine readable form, you can use a command like this:
 -->
+
 要查看 Job 对应的已完成的 Pods，可以执行 `kubectl get pods`。
 
 要以机器可读的方式列举隶属于某 Job 的全部 Pods，你可以使用类似下面这条命令：
@@ -142,6 +148,7 @@ that just gets the name from each Pod in the returned list.
 
 View the standard output of one of the pods:
 -->
+
 这里，选择算符与 Job 的选择算符相同。`--output=jsonpath` 选项给出了一个表达式，
 用来从返回的列表中提取每个 Pod 的 name 字段。
 
@@ -152,11 +159,13 @@ kubectl logs $pods
 ```
 
 <!--The output is similar to this:-->
+
 输出类似于：
 
 ```
 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337867831652712019091456485669234603486104543266482133936072602491412737245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491298336733624406566430860213949463952247371907021798609437027705392171762931767523846748184676694051320005681271452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235420199561121290219608640344181598136297747713099605187072113499999983729780499510597317328160963185950244594553469083026425223082533446850352619311881710100031378387528865875332083814206171776691473035982534904287554687311595628638823537875937519577818577805321712268066130019278766111959092164201989380952572010654858632788659361533818279682303019520353018529689957736225994138912497217752834791315155748572424541506959508295331168617278558890750983817546374649393192550604009277016711390098488240128583616035637076601047101819429555961989467678374494482553797747268471040475346462080466842590694912933136770289891521047521620569660240580381501935112533824300355876402474964732639141992726042699227967823547816360093417216412199245863150302861829745557067498385054945885869269956909272107975093029553211653449872027559602364806654991198818347977535663698074265425278625518184175746728909777727938000816470600161452491921732172147723501414419735685481613611573525521334757418494684385233239073941433345477624168625189835694855620992192221842725502542568876717904946016534668049886272327917860857843838279679766814541009538837863609506800642251252051173929848960841284886269456042419652850222106611863067442786220391949450471237137869609563643719172874677646575739624138908658326459958133904780275901
 ```
+
 <!--
 ## Writing a Job spec
 
@@ -165,6 +174,7 @@ Its name must be a valid [DNS subdomain name](/docs/concepts/overview/working-wi
 
 A Job also needs a [`.spec` section](https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status).
 -->
+
 ## 编写 Job 规约
 
 与 Kubernetes 中其他资源的配置类似，Job 也需要 `apiVersion`、`kind` 和 `metadata` 字段。
@@ -184,6 +194,7 @@ labels (see [pod selector](#pod-selector)) and an appropriate restart policy.
 
 Only a [`RestartPolicy`](/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy) equal to `Never` or `OnFailure` is allowed.
 -->
+
 ### Pod 模版
 
 Job 的 `.spec` 中只有 `.spec.template` 是必需的字段。
@@ -204,7 +215,8 @@ Job 中 Pod 的 [`RestartPolicy`](/zh/docs/concepts/workloads/pods/pod-lifecycle
 The `.spec.selector` field is optional.  In almost all cases you should not specify it.
 See section [specifying your own pod selector](#specifying-your-own-pod-selector).
 -->
-### Pod 选择算符   {#pod-selector}
+
+### Pod 选择算符 {#pod-selector}
 
 字段 `.spec.selector` 是可选的。在绝大多数场合，你都不需要为其赋值。
 参阅[设置自己的 Pod 选择算符](#specifying-your-own-pod-selector).
@@ -214,9 +226,11 @@ See section [specifying your own pod selector](#specifying-your-own-pod-selector
 
 There are three main types of task suitable to run as a Job:
 -->
+
 ### Job 的并行执行 {#parallel-jobs}
 
 适合以 Job 形式来运行的任务主要有三种：
+
 <!--
 1. Non-parallel Jobs
    - normally, only one Pod is started, unless the Pod fails.
@@ -233,15 +247,15 @@ There are three main types of task suitable to run as a Job:
    - once at least one Pod has terminated with success and all Pods are terminated, then the Job is completed with success.
    - once any Pod has exited with success, no other Pod should still be doing any work for this task or writing any output.  They should all be in the process of exiting.
 -->
+
 1. 非并行 Job
    - 通常只启动一个 Pod，除非该 Pod 失败
    - 当 Pod 成功终止时，立即视 Job 为完成状态
-1. 具有 *确定完成计数* 的并行 Job
+1. 具有 _确定完成计数_ 的并行 Job
    - `.spec.completions` 字段设置为非 0 的正数值
-   - Job 用来代表整个任务，当对应于 1 和 `.spec.completions` 之间的每个整数都存在
-     一个成功的 Pod 时，Job 被视为完成
+   - Job 用来代表整个任务，当成功的 Pod 数量处于 1 和 `.spec.completions` 之间的任意数值时，Job 被视为完成
    - **尚未实现**：每个 Pod 收到一个介于 1 和 `spec.completions` 之间的不同索引值
-1. 带 *工作队列* 的并行 Job
+1. 带 _工作队列_ 的并行 Job
    - 不设置 `spec.completions`，默认值为 `.spec.parallelism`
    - 多个 Pod 之间必须相互协调，或者借助外部服务确定每个 Pod 要处理哪个工作条目。
      例如，任一 Pod 都可以从工作队列中取走最多 N 个工作条目。
@@ -263,6 +277,7 @@ a non-negative integer.
 
 For more information about how to make use of the different types of job, see the [job patterns](#job-patterns) section.
 -->
+
 对于 _非并行_ 的 Job，你可以不设置 `spec.completions` 和 `spec.parallelism`。
 这两个属性都不设置时，均取默认值 1。
 
@@ -284,7 +299,8 @@ If it is specified as 0, then the Job is effectively paused until it is increase
 Actual parallelism (number of pods running at any instant) may be more or less than requested
 parallelism, for a variety of reasons:
 -->
-#### 控制并行性   {#controlling-parallelism}
+
+#### 控制并行性 {#controlling-parallelism}
 
 并行性请求（`.spec.parallelism`）可以设置为任何非负整数。
 如果未设置，则默认为 1。
@@ -303,6 +319,7 @@ parallelism, for a variety of reasons:
 - The Job controller may throttle new Pod creation due to excessive previous pod failures in the same Job.
 - When a Pod is gracefully shut down, it takes time to stop.
 -->
+
 - 对于 _确定完成计数_ Job，实际上并行执行的 Pods 个数不会超出剩余的完成数。
   如果 `.spec.parallelism` 值较高，会被忽略。
 - 对于 _工作队列_ Job，有任何 Job 成功结束之后，不会有新的 Pod 启动。
@@ -311,7 +328,7 @@ parallelism, for a variety of reasons:
 - 如果 Job 控制器因为任何原因（例如，缺少 `ResourceQuota` 或者没有权限）无法创建 Pods。
   Pods 个数可能比请求的数目小。
 - Job 控制器可能会因为之前同一 Job 中 Pod 失效次数过多而压制新 Pod 的创建。
-- 当 Pod 处于体面终止进程中，需要一定时间才能停止。
+- 当 Pod 处于优雅终止进程中，需要一定时间才能停止。
 
 <!--
 ## Handling Pod and container failures
@@ -343,6 +360,7 @@ starts a new Pod.  This means that your application needs to handle the case whe
 pod.  In particular, it needs to handle temporary files, locks, incomplete output and the like
 caused by previous runs.
 -->
+
 整个 Pod 也可能会失败，且原因各不相同。
 例如，当 Pod 启动时，节点失效（被升级、被重启、被删除等）或者其中的容器失败而
 `.spec.template.spec.restartPolicy = "Never"`。
@@ -358,6 +376,7 @@ sometimes be started twice.
 If you do specify `.spec.parallelism` and `.spec.completions` both greater than 1, then there may be
 multiple pods running at once.  Therefore, your pods must also be tolerant of concurrency.
 -->
+
 注意，即使你将 `.spec.parallelism` 设置为 1，且将 `.spec.completions` 设置为
 1，并且 `.spec.template.spec.restartPolicy` 设置为 "Never"，同一程序仍然有可能被启动两次。
 
@@ -377,14 +396,15 @@ exponential back-off delay (10s, 20s, 40s ...) capped at six minutes. The
 back-off count is reset when a Job's Pod is deleted or successful without any
 other Pods for the Job failing around that time.
 -->
+
 ### Pod 回退失效策略
 
 在有些情形下，你可能希望 Job 在经历若干次重试之后直接进入失败状态，因为这很
 可能意味着遇到了配置错误。
 为了实现这点，可以将 `.spec.backoffLimit` 设置为视 Job 为失败之前的重试次数。
 失效回退的限制值默认为 6。
-与 Job 相关的失效的 Pod 会被 Job 控制器重建，并且以指数型回退计算重试延迟
-（从 10 秒、20 秒到 40 秒，最多 6 分钟）。
+与 Job 相关的失效的 Pod 会被 Job 控制器重建，以指数型增长回退重试延迟时间
+（从 10 秒、20 秒到 40 秒）最多至 6 分钟。
 当 Job 的 Pod 被删除时，或者 Pod 成功时没有其它 Pod 处于失败状态，失效回退的次数也会被重置（为 0）。
 
 <!--
@@ -393,6 +413,7 @@ will be terminated once the job backoff limit has been reached. This can make de
 `restartPolicy = "Never"` when debugging the Job or using a logging system to ensure output
 from failed Jobs is not lost inadvertently.
 -->
+
 {{< note >}}
 如果你的 Job 的 `restartPolicy` 被设置为 "OnFailure"，就要注意运行该 Job 的容器
 会在 Job 到达失效回退次数上限时自动被终止。
@@ -409,6 +430,7 @@ allows you to still view the logs of completed pods to check for errors, warning
 The job object also remains after it is completed so that you can view its status.  It is up to the user to delete
 old jobs after noting their status.  Delete the job with `kubectl` (e.g. `kubectl delete jobs/pi` or `kubectl delete -f ./job.yaml`). When you delete the job using `kubectl`, all the pods it created are deleted too.
 -->
+
 ## Job 终止与清理
 
 Job 完成时不会再创建新的 Pod，不过已有的 Pod 也不会被删除。
@@ -429,6 +451,7 @@ Do this by setting the `.spec.activeDeadlineSeconds` field of the Job to a numbe
 The `activeDeadlineSeconds` applies to the duration of the job, no matter how many Pods are created.
 Once a Job reaches `activeDeadlineSeconds`, all of its running Pods are terminated and the Job status will become `type: Failed` with `reason: DeadlineExceeded`.
 -->
+
 默认情况下，Job 会持续运行，除非某个 Pod 失败（`restartPolicy=Never`）
 或者某个容器出错退出（`restartPolicy=OnFailure`）。
 这时，Job 基于前述的 `spec.backoffLimit` 来决定是否以及如何重试。
@@ -447,6 +470,7 @@ Note that a Job's `.spec.activeDeadlineSeconds` takes precedence over its `.spec
 
 Example:
 -->
+
 注意 Job 的 `.spec.activeDeadlineSeconds` 优先级高于其 `.spec.backoffLimit` 设置。
 因此，如果一个 Job 正在重试一个或多个失效的 Pod，该 Job 一旦到达
 `activeDeadlineSeconds` 所设的时限即不再部署额外的 Pod，即使其重试次数还未
@@ -470,12 +494,14 @@ spec:
         command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
       restartPolicy: Never
 ```
+
 <!--
 Note that both the Job spec and the [Pod template spec](/docs/concepts/workloads/pods/init-containers/#detailed-behavior) within the Job have an `activeDeadlineSeconds` field. Ensure that you set this field at the proper level.
 
 Keep in mind that the `restartPolicy` applies to the Pod, and not to the Job itself: there is no automatic Job restart once the Job status is `type: Failed`.
 That is, the Job termination mechanisms activated with `.spec.activeDeadlineSeconds` and `.spec.backoffLimit` result in a permanent Job failure that requires manual intervention to resolve.
 -->
+
 注意 Job 规约和 Job 中的
 [Pod 模版规约](/zh/docs/concepts/workloads/pods/init-containers/#detailed-behavior)
 都有 `activeDeadlineSeconds` 字段。
@@ -497,7 +523,8 @@ cleaned up by CronJobs based on the specified capacity-based cleanup policy.
 
 ### TTL mechanism for finished Jobs
 -->
-## 自动清理完成的 Job   {#clean-up-finished-jobs-automatically}
+
+## 自动清理完成的 Job {#clean-up-finished-jobs-automatically}
 
 完成的 Job 通常不需要留存在系统中。在系统中一直保留它们会给 API
 服务器带来额外的压力。
@@ -505,7 +532,7 @@ cleaned up by CronJobs based on the specified capacity-based cleanup policy.
 [CronJobs](/zh/docs/concepts/workloads/controllers/cron-jobs/)，
 则 Job 可以被 CronJob 基于特定的根据容量裁定的清理策略清理掉。
 
-### 已完成 Job 的 TTL 机制  {#ttl-mechanisms-for-finished-jobs}
+### 已完成 Job 的 TTL 机制 {#ttl-mechanisms-for-finished-jobs}
 
 {{< feature-state for_k8s_version="v1.12" state="alpha" >}}
 
@@ -523,6 +550,7 @@ be honored.
 
 For example:
 -->
+
 自动清理已完成 Job （状态为 `Complete` 或 `Failed`）的另一种方式是使用由
 [TTL 控制器](/zh/docs/concepts/workloads/controllers/ttlafterfinished/)所提供
 的 TTL 机制。
@@ -564,6 +592,7 @@ more information, see the documentation for
 [TTL controller](/docs/concepts/workloads/controllers/ttlafterfinished/) for
 finished resources.
 -->
+
 Job `pi-with-ttl` 在结束 100 秒之后，可以成为被自动删除的标的。
 
 如果该字段设置为 `0`，Job 在结束之后立即成为可被自动删除的对象。
@@ -582,11 +611,12 @@ computing.  It does support parallel processing of a set of independent but rela
 These might be emails to be sent, frames to be rendered, files to be transcoded, ranges of keys in a
 NoSQL database to scan, and so on.
 -->
-## Job 模式  {#job-patterns}
+
+## Job 模式 {#job-patterns}
 
 Job 对象可以用来支持多个 Pod 的可靠的并发执行。
 Job 对象不是设计用来支持相互通信的并行进程的，后者一般在科学计算中应用较多。
-Job 的确能够支持对一组相互独立而又有所关联的 *工作条目* 的并行处理。
+Job 的确能够支持对一组相互独立而又有所关联的 _工作条目_ 的并行处理。
 这类工作条目可能是要发送的电子邮件、要渲染的视频帧、要编解码的文件、NoSQL
 数据库中要扫描的主键范围等等。
 
@@ -597,8 +627,9 @@ considering one set of work items that the user wants to manage together &mdash;
 There are several different patterns for parallel computation, each with strengths and weaknesses.
 The tradeoffs are:
 -->
+
 在一个复杂系统中，可能存在多个不同的工作条目集合。这里我们仅考虑用户希望一起管理的
-工作条目集合之一 &mdash; *批处理作业*。
+工作条目集合之一 &mdash; _批处理作业_。
 
 并行计算的模式有好多种，每种都有自己的强项和弱点。这里要权衡的因素有：
 
@@ -613,6 +644,7 @@ The tradeoffs are:
   and modifications to the existing program or container to make it use the work queue.
   Other approaches are easier to adapt to an existing containerised application.
 -->
+
 - 每个工作条目对应一个 Job 或者所有工作条目对应同一 Job 对象。
   后者更适合处理大量工作条目的场景；
   前者会给用户带来一些额外的负担，而且需要系统管理大量的 Job 对象。
@@ -627,15 +659,16 @@ The tradeoffs are:
 The tradeoffs are summarized here, with columns 2 to 4 corresponding to the above tradeoffs.
 The pattern names are also links to examples and more detailed description.
 -->
+
 下面是对这些权衡的汇总，列 2 到 4 对应上面的权衡比较。
 模式的名称对应了相关示例和更详细描述的链接。
 
-| 模式  | 单个 Job 对象 | Pods 数少于工作条目数？ | 直接使用应用无需修改? | 在 Kube 1.1 上可用？|
-| ----- |:-------------:|:-----------------------:|:---------------------:|:-------------------:|
-| [Job 模版扩展](/zh/docs/tasks/job/parallel-processing-expansion/)  |  |  | ✓ | ✓ |
-| [每工作条目一 Pod 的队列](/zh/docs/tasks/job/coarse-parallel-processing-work-queue/) | ✓ | | 有时 | ✓ |
-| [Pod 数量可变的队列](/zh/docs/tasks/job/fine-parallel-processing-work-queue/) | ✓ | ✓ |  | ✓ |
-| 静态工作分派的单个 Job | ✓ |  | ✓ |  |
+| 模式                                                                                 | 单个 Job 对象 | Pods 数少于工作条目数？ | 直接使用应用无需修改? | 在 Kube 1.1 上可用？ |
+| ------------------------------------------------------------------------------------ | :-----------: | :---------------------: | :-------------------: | :------------------: |
+| [Job 模版扩展](/zh/docs/tasks/job/parallel-processing-expansion/)                    |               |                         |           ✓           |          ✓           |
+| [每工作条目一 Pod 的队列](/zh/docs/tasks/job/coarse-parallel-processing-work-queue/) |       ✓       |                         |         有时          |          ✓           |
+| [Pod 数量可变的队列](/zh/docs/tasks/job/fine-parallel-processing-work-queue/)        |       ✓       |            ✓            |                       |          ✓           |
+| 静态工作分派的单个 Job                                                               |       ✓       |                         |           ✓           |                      |
 
 <!--
 When you specify completions with `.spec.completions`, each Pod created by the Job controller
@@ -647,6 +680,7 @@ are different ways to arrange for pods to work on different things.
 This table shows the required settings for `.spec.parallelism` and `.spec.completions` for each of the patterns.
 Here, `W` is the number of work items.
 -->
+
 当你使用 `.spec.completions` 来设置完成数时，Job 控制器所创建的每个 Pod
 使用完全相同的 [`spec`](https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status)。
 这意味着任务的所有 Pod 都有相同的命令行，都使用相同的镜像和数据卷，甚至连
@@ -656,12 +690,12 @@ Here, `W` is the number of work items.
 下表显示的是每种模式下 `.spec.parallelism` 和 `.spec.completions` 所需要的设置。
 其中，`W` 表示的是工作条目的个数。
 
-| 模式  | `.spec.completions` |  `.spec.parallelism` |
-| ----- |:-------------------:|:--------------------:|
-| [Job 模版扩展](/zh/docs/tasks/job/parallel-processing-expansion/) | 1 | 应该为 1 |
-| [每工作条目一 Pod 的队列](/zh/docs/tasks/job/coarse-parallel-processing-work-queue/) | W | 任意值 |
-| [Pod 个数可变的队列](/zh/docs/tasks/job/fine-parallel-processing-work-queue/) | 1 | 任意值 |
-| 基于静态工作分派的单一 Job | W | 任意值 |
+| 模式                                                                                 | `.spec.completions` | `.spec.parallelism` |
+| ------------------------------------------------------------------------------------ | :-----------------: | :-----------------: |
+| [Job 模版扩展](/zh/docs/tasks/job/parallel-processing-expansion/)                    |          1          |      应该为 1       |
+| [每工作条目一 Pod 的队列](/zh/docs/tasks/job/coarse-parallel-processing-work-queue/) |          W          |       任意值        |
+| [Pod 个数可变的队列](/zh/docs/tasks/job/fine-parallel-processing-work-queue/)        |          1          |       任意值        |
+| 基于静态工作分派的单一 Job                                                           |          W          |       任意值        |
 
 <!--
 ## Advanced usage
@@ -675,7 +709,8 @@ It picks a selector value that will not overlap with any other jobs.
 However, in some cases, you might need to override this automatically set selector.
 To do this, you can specify the `.spec.selector` of the Job.
 -->
-## 高级用法   {#advanced-usage}
+
+## 高级用法 {#advanced-usage}
 
 ### 指定你自己的 Pod 选择算符 {#specifying-your-own-pod-selector}
 
@@ -695,6 +730,7 @@ chosen, then other controllers (e.g. ReplicationController) and their Pods may b
 in unpredictable ways too.  Kubernetes will not stop you from making a mistake when
 specifying `.spec.selector`.
 -->
+
 做这个操作时请务必小心。
 如果你所设定的标签选择算符并不唯一针对 Job 对应的 Pod 集合，甚或该算符还能匹配
 其他无关的 Pod，这些无关的 Job 的 Pod 可能会被删除。
@@ -715,6 +751,7 @@ Therefore, you delete Job `old` but _leave its pods
 running_, using `kubectl delete jobs/old -cascade=false`.
 Before deleting it, you make a note of what selector it uses:
 -->
+
 下面是一个示例场景，在这种场景下你可能会使用刚刚讲述的特性。
 
 假定名为 `old` 的 Job 已经处于运行状态。
@@ -751,12 +788,13 @@ they are controlled by Job `new` as well.
 You need to specify `manualSelector: true` in the new Job since you are not using
 the selector that the system normally generates for you automatically.
 -->
+
 接下来你会创建名为 `new` 的新 Job，并显式地为其设置相同的选择算符。
 由于现有 Pod 都具有标签 `controller-uid=a8f3d00d-c6d2-11e5-9f87-42010af00002`，
 它们也会被名为 `new` 的 Job 所控制。
 
 你需要在新 Job 中设置 `manualSelector: true`，因为你并未使用系统通常自动为你
-生成的选择算符。 
+生成的选择算符。
 
 ```yaml
 kind: Job
@@ -776,6 +814,7 @@ The new Job itself will have a different uid from `a8f3d00d-c6d2-11e5-9f87-42010
 `manualSelector: true` tells the system to that you know what you are doing and to allow this
 mismatch.
 -->
+
 新的 Job 自身会有一个不同于 `a8f3d00d-c6d2-11e5-9f87-42010af00002` 的唯一 ID。
 设置 `manualSelector: true` 是在告诉系统你知道自己在干什么并要求系统允许这种不匹配
 的存在。
@@ -790,9 +829,10 @@ and will not be restarted.  However, a Job will create new Pods to replace termi
 For this reason, we recommend that you use a Job rather than a bare Pod, even if your application
 requires only a single Pod.
 -->
-## 替代方案  {#alternatives}
 
-### 裸 Pod  {#bare-pods}
+## 替代方案 {#alternatives}
+
+### 裸 Pod {#bare-pods}
 
 当 Pod 运行所在的节点重启或者失败，Pod 会被终止并且不会被重启。
 Job 会重新创建新的 Pod 来替代已终止的 Pod。
@@ -810,7 +850,8 @@ As discussed in [Pod Lifecycle](/docs/concepts/workloads/pods/pod-lifecycle/), `
 for pods with `RestartPolicy` equal to `OnFailure` or `Never`.
 (Note: If `RestartPolicy` is not set, the default value is `Always`.)
 -->
-### 副本控制器    {#replication-controller}
+
+### 副本控制器 {#replication-controller}
 
 Job 与[副本控制器](/zh/docs/concepts/workloads/controllers/replicationcontroller/)是彼此互补的。
 副本控制器管理的是那些不希望被终止的 Pod （例如，Web 服务器），
@@ -827,6 +868,7 @@ Another pattern is for a single Job to create a Pod which then creates other Pod
 of custom controller for those Pods.  This allows the most flexibility, but may be somewhat
 complicated to get started with and offers less integration with Kubernetes.
 -->
+
 ### 单个 Job 启动控制器 Pod
 
 另一种模式是用唯一的 Job 来创建 Pod，而该 Pod 负责启动其他 Pod，因此扮演了一种
@@ -842,6 +884,7 @@ driver, and then cleans up.
 An advantage of this approach is that the overall process gets the completion guarantee of a Job
 object, but maintains complete control over what Pods are created and how work is assigned to them.
 -->
+
 这种模式的实例之一是用 Job 来启动一个运行脚本的 Pod，脚本负责启动 Spark
 主控制器（参见 [Spark 示例](https://github.com/kubernetes/examples/tree/{{< param "githubbranch" >}}/staging/spark/README.md)），
 运行 Spark 驱动，之后完成清理工作。
@@ -854,8 +897,8 @@ object, but maintains complete control over what Pods are created and how work i
 
 You can use a [`CronJob`](/docs/concepts/workloads/controllers/cron-jobs/) to create a Job that will run at specified times/dates, similar to the Unix tool `cron`.
 -->
+
 ## Cron Jobs {#cron-jobs}
 
 你可以使用 [`CronJob`](/zh/docs/concepts/workloads/controllers/cron-jobs/)
 创建一个在指定时间/日期运行的 Job，类似于 UNIX 系统上的 `cron` 工具。
-
