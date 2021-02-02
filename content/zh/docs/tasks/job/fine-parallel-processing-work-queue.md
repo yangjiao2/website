@@ -121,7 +121,7 @@ Now hit enter, start the redis CLI, and create a list with some work items in it
 -->
 现在按回车键，启动 redis 命令行界面，然后创建一个存在若干个工作项的列表。
 
-```
+```shell
 # redis-cli -h redis
 redis:6379> rpush job2 "apple"
 (integer) 1
@@ -360,11 +360,10 @@ want to consider one of the other [job patterns](/docs/concepts/jobs/run-to-comp
 
 <!--
 If you have a continuous stream of background processing work to run, then
-consider running your background workers with a `replicationController` instead,
+consider running your background workers with a `ReplicaSet` instead,
 and consider running a background processing library such as
 [https://github.com/resque/resque](https://github.com/resque/resque).
 -->
 如果你有持续的后台处理业务，那么可以考虑使用 `ReplicaSet` 来运行你的后台业务，
 和运行一个类似 [https://github.com/resque/resque](https://github.com/resque/resque)
 的后台处理库。
-
